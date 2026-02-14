@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baby Gato Valentine 💘</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Patrick Hand', cursive;
+    background: #ffe6e6;
+    color: #b30059;
+    overflow-x: hidden;
+  }
+
+  .center-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  button {
+    background: #ffd6e6;
+    color: #b30059;
+    border: 2px solid #ff99cc;
+    border-radius: 12px;
+    padding: 12px 24px;
+    margin: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  button:hover {
+    background: #ff99cc;
+    color: #fff;
+  }
+
+  .hidden { display: none; }
+
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    animation: floatUp 2s linear forwards;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0); opacity:1; }
+    100% { transform: translateY(-200px); opacity:0; }
+  }
+
+  .paw {
+    font-size: 36px;
+    position: absolute;
+    animation: pawMove 1s linear forwards;
+  }
+
+  @keyframes pawMove {
+    0% { transform: translateY(0); opacity:1; }
+    100% { transform: translateY(-150px); opacity:0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Opening Screen -->
+<div id="screen1" class="center-screen">
+  <h1>⚠️ WARNING ⚠️</h1>
+  <p>This website contains extreme levels of love and cuteness.<br>Proceed at your own risk, Baby Gato 🐱💘</p>
+  <button onclick="enterGame()">Enter</button>
+</div>
+
+<!-- Game Screen Container -->
+<div id="gameScreen" class="center-screen hidden"></div>
+
+<!-- Audio -->
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let gameScreen = document.getElementById('gameScreen');
+let bgMusic = document.getElementById('bgMusic');
+
+// Game sequence
+let games = [game1, game2, game3, game4, game5];
+let currentGame = 0;
+
+// Enter Button
+function enterGame(){
+  document.getElementById('screen1').classList.add('hidden');
+  gameScreen.classList.remove('hidden');
+  bgMusic.play();
+  nextGame();
+}
+
+// Load next game
+function nextGame(){
+  gameScreen.innerHTML = '';
+  if(currentGame < games.length){
+    games[currentGame]();
+    currentGame++;
+  } else {
+    gameScreen.innerHTML = `<h2>💘 You survived the love gauntlet! 💘</h2>`;
+  }
+}
+
+// ----- Game 1: Yes/No Trap -----
+function game1(){
+  gameScreen.innerHTML = `<h2>Do you love me more than cats? 🐱</h2>`;
+  let yesBtn = document.createElement('button');
+  yesBtn.textContent = 'Yes 💕';
+  yesBtn.onclick = nextGame;
+  let noBtn = document.createElement('button');
+  noBtn.textContent = 'No 😿';
+  noBtn.onmouseover = () => {
+    let x = Math.random() * (window.innerWidth - 100);
+    let y = Math.random() * (window.innerHeight - 100);
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+  };
+  gameScreen.appendChild(yesBtn);
+  gameScreen.appendChild(noBtn);
+}
+
+// ----- Game 2: Catch the Heart -----
+function game2(){
+  gameScreen.innerHTML = `<h2>Catch the hearts! 💘</h2>`;
+  let catchCount = 0;
+  let interval = setInterval(() => {
+    let heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.top = '80%';
+    heart.textContent = '💖';
+    heart.onclick = () => {
+      catchCount++;
+      heart.remove();
+      alert("Caught a heart! Total: " + catchCount);
+      if(catchCount >= 5){
+        clearInterval(interval);
+        nextGame();
+      }
+    };
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(), 2500);
+  }, 800);
+}
+
+// ----- Game 3: Cat Tap Secret -----
+function game3(){
+  gameScreen.innerHTML = `<h2>Tap the cozy cat 3 times 🐱</h2>`;
+  let cat = document.createElement('div');
+  cat.textContent = '🐱';
+  cat.style.fontSize = '80px';
+  cat.style.cursor = 'pointer';
+  let taps = 0;
+  cat.onclick = () => {
+    taps++;
+    let paw = document.createElement('div');
+    paw.className = 'paw';
+    paw.style.left = (Math.random()*window.innerWidth)+'px';
+    paw.style.top = '80%';
+    paw.textContent = '🐾';
+    document.body.appendChild(paw);
+    setTimeout(()=>paw.remove(), 1000);
+    if(taps>=3){
+      alert('Secret message unlocked: I love you Baby Gato 💕');
+      nextGame();
+    }
+  };
+  gameScreen.appendChild(cat);
+}
+
+// ----- Game 4: Love Quiz -----
+function game4(){
+  gameScreen.innerHTML = `<h2>Would you rather?</h2>`;
+  let q1 = document.createElement('button');
+  q1.textContent = 'Cuddle with me 💕';
+  q1.onclick = nextGame;
+  let q2 = document.createElement('button');
+  q2.textContent = 'Cuddle with 1000 kittens 😹';
+  q2.onclick = nextGame;
+  gameScreen.appendChild(q1);
+  gameScreen.appendChild(q2);
+}
+
+// ----- Game 5: Final Valentine -----
+function game5(){
+  gameScreen.innerHTML = `<h2>💘 Will you be my Valentine? 💘</h2>`;
+  let yesBtn = document.createElement('button');
+  yesBtn.textContent = 'Yes 💕';
+  yesBtn.onclick = () => {
+    alert('Yay! I love you Baby Gato 🐱💖');
+    nextGame();
+  };
+  let noBtn = document.createElement('button');
+  noBtn.textContent = 'Of course yes 😏';
+  noBtn.onclick = () => {
+    alert('I knew it! 💘');
+    nextGame();
+  };
+  gameScreen.appendChild(yesBtn);
+  gameScreen.appendChild(noBtn);
+}
+</script>
+</body>
+</html>
